@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: toolqueue
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/toolqueue?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8}
+    username: ${DB_USERNAME:tool}
+    password: ${DB_PASSWORD:tool}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        prefetch: 1
+        default-requeue-rejected: false
+
+server:
+  port: ${PORT:8081}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+app:
+  outbox:
+    poll-delay-ms: ${OUTBOX_POLL_DELAY_MS:500}
+
